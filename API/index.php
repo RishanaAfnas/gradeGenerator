@@ -80,8 +80,6 @@ if(isset($_FILES['doc'])) {
 
         $writer = new Xlsx($newSpreadsheet);
 
-        $writer->save('../software/new.xlsx');
+        $writer->save('C:\xampp\htdocs\grade\new grade-generator\software\software.xlsx');
             }
         }
-
-?>

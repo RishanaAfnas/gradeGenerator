@@ -1,95 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Excel Sheet</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <!-- Include SweetAlert2 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Excel Sheet</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <!-- Include SweetAlert2 CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    crossorigin="anonymous">
-</head>
+  <body>
+    <div class="col-lg-2 m-auto mt-5">
+      <form
+        class="form-group"
+        action="index.html"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <label class="form-label">Choose Excel File</label>
+        <input
+          class="form-control"
+          type="file"
+          name="doc"
+          accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          required
+        />
+        <button
+          id="btn1"
+          class="btn btn-primary btn-sm mt-2 "
+          type="submit"
+          name="submit"
+        >
+          Submit
+        </button>
+        <button
+          id="btn2"
+          type="button"
+          class="btn btn-primary btn-sm mt-2 disabled"
+        >
+          Show Graph
+        </button>
+      </form>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("form").on("submit", function (e) {
+          var formData = new FormData(this);
+          e.preventDefault();
+          $.ajax({
+            url: "./API/index.php",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (res) {
+              Swal.fire({
+                title: "Submit ",
+                text: "Are you sure you want to submit ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                reverseButtons: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Enable the "Show Graph" button
+                  $("#btn2").removeClass("disabled");
 
-<body>
-  <div class="col-lg-2 m-auto mt-5">
-    <form class="form-group" action="index.html" method="POST" enctype="multipart/form-data">
-      <label class="form-label">Choose Excel File</label>
-      <input class="form-control" type="file" name="doc"
-        accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        required>
-      <button id="btn1" class="btn btn-success btn-sm mt-2" type="submit" name="submit">Submit</button>
-      <button id="btn2" type="button" class="btn btn-primary btn-sm mt-2 disabled">Show Graph</button>
-    </form>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $("form").on('submit', (function (e) {
-        var formData = new FormData(this);
-        e.preventDefault();
-        $.ajax({
-          url: "./API/index.php",
-          type: "POST",
-          data: formData,
-          contentType: false,
-          cache: false,
-          processData: false,
-          success: function (res) {
-            Swal.fire({
-              html: '<b>Submitted the Excel file successfully!<br>Press the Show Graph Button to proceed.</b>',
-              icon: 'success',
-              confirmButtonText: 'OK',
-              allowOutsideClick: false,
-              customClass: {
-                confirmButton: 'button is-primary' // Apply Bulma classes to the confirm button
-              }
-            }).then(() => {
-              $('#btn2').removeClass('disabled');
-            });
-          },
-          error: function (err) {
-            console.log(err);
-          }
+                  Swal.fire({
+                    title: " Submitted!",
+                    text: " submitted successfully. Press the Show Graph button to proceed.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                  });
+                }
+              });
+            },
+            error: function (err) {
+              console.log(err);
+            },
+          });
         });
-      }));
 
-      $('#btn2').on('click', async function () {
-        const { value: formValues } = await Swal.fire({
-          title: 'Graph Detail',
-          html: `
+        $("#btn2").on("click", async function () {
+          const { value: formValues } = await Swal.fire({
+            title: "Graph Detail",
+            html: `
           <form class="d-flex flex-column w-75 m-auto align-items-center" action="./graph.php" method="POST">
-            <input type="text" class="form-control mt-4" name="insName" placeholder="Instructor Name">
-            <input type="text" class="form-control mt-4" name="sub" placeholder="Subject">
-            <input type="text" class="form-control mt-4" name="subCode" placeholder="Subject Code">
-            <select class="form-select mt-4" name="sem" aria-label="Default select example">
+            <input type="text" class="form-control mt-4" name="insName" placeholder="Instructor Name" required>
+            <input type="text" class="form-control mt-4" name="sub" placeholder="Subject" required>
+            <input type="text" class="form-control mt-4" name="subCode" placeholder="Subject Code" required>
+            <select class="form-select mt-4" name="sem" aria-label="Default select example" required>
               <option selected disabled>Choose Semester</option>
               <option value="Ist Sem">Ist Sem</option>
               <option value="IInd Sem">IInd Sem</option>
               <option value="IIIrd Sem">IIIrd Sem</option>
             </select>
-            <select class="form-select mt-4" name="year" aria-label="Default select example">
+            <select class="form-select mt-4" name="year" aria-label="Default select example" required>
               <option selected disabled>Choose Year</option>
               <option value="2021-22">2021-22</option>
               <option value="2022-23">2022-23</option>
               <option value="2023-24">2023-24</option>
             </select>
-            <button class="btn btn-primary mt-4" name="submit" type="submit">Submit</button>
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-primary" name="submit" type="submit">Submit</button>
+              <button class="btn btn-danger ms-3" type="reset">Cancel</button>
+            </div>
           </form>
         `,
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          focusConfirm: false,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            focusConfirm: false,
+          });
         });
       });
-    });
-
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
