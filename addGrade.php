@@ -75,66 +75,7 @@ foreach ($gradeCount as $grade) {
 
 
 
-// if (isset($_POST['excelsheet']))
-// {
 
-//     $newFinal=[];
-//     foreach ($sheetData as $row) {
-//         $firstColumns = array_slice($row, 0, 2);       // Extract the first two columns
-//         $lastColumn = array_slice($row, -1, 1); 
-//         $newRow = array_merge($firstColumns, $lastColumn);       // Extract the last column
-
-//         $newFinal[] = $newRow;
-//     }
-
-//     foreach ($newFinal as $key => $student) {
-//         // Get the marks of the student
-//         $marks = $student[2];
-
-
-//         $newgrade = '';
-//         // Determine the grade based on the marks using if-else statements
-//         if(($marks >= $startA) && ($marks <= $endA))
-//         {
-//             $newgrade='A';
-//             echo $newgrade;
-
-
-//         }
-//         elseif(($marks >= $startB) && ($marks <= $endB))
-//         {
-//             $newgrade='B';
-//         }
-//         elseif(($marks >= $startC) && ($marks <= $endC))
-//         {
-//            $newgrade='C';
-//            echo $newgrade;
-//         }
-//         elseif(($marks >= $startD) && ($marks<= $endD))
-//         {
-//             $newgrade='D';
-//            echo $newgrade;
-//         }
-//         elseif(($marks >= $startE) && ($marks <= $endE))
-//         {
-//             $newgrade='E';
-//             echo $newgrade;
-//          }
-//          $newFinal[$key]['grade'] = $newgrade;
-//         }
-
-//         $writer = new Xlsx($spreadsheet);
-//     $filename = 'modified_sheet.xlsx';
-//     $writer->save($filename);
-
-//     // Download the file
-//     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-//     header('Content-Disposition: attachment;filename="' . $filename . '"');
-//     header('Cache-Control: max-age=0');
-//     $writer->save('php://output');
-//     exit;
-
-// }
 
 
 
@@ -312,7 +253,7 @@ foreach ($gradeCount as $grade) {
         if (($marks >= $startA) && ($marks <= $endA)) {
             $newgrade = 'A';
         } elseif (($marks >= $startB) && ($marks <= $endB)) {
-            $newgarde = 'B';
+            $newgrade = 'B';
         } elseif (($marks >= $startC) && ($marks <= $endC)) {
             $newgrade = 'C';
         } elseif (($marks >= $startD) && ($marks <= $endD)) {
