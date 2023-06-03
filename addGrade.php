@@ -103,7 +103,7 @@ foreach ($gradeCount as $grade) {
 //         }
 //         elseif(($marks >= $startB) && ($marks <= $endB))
 //         {
-//             $newgarde='B';
+//             $newgrade='B';
 //         }
 //         elseif(($marks >= $startC) && ($marks <= $endC))
 //         {
