@@ -1,13 +1,20 @@
 <?php
+session_start();
+
 include_once __DIR__ . '/composer/vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 if (isset($_POST['submit'])) {
   $name = $_POST['insName'];
+  $_SESSION['name'] = $name;
+
   $subject = $_POST['sub'];
+  $_SESSION['subject'] = $subject;
   $sem = $_POST['sem'];
+  $_SESSION['sem'] = $sem;
   $year = $_POST['year'];
+  $_SESSION['year'] = $year;
 
   $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
@@ -125,27 +132,27 @@ if (isset($_POST['submit'])) {
                 <tr>
                   <td>A</td>
                   <td><input type="number" name="startA" required></td>
-                  <td><input type="number" name="endA" required></td>
+                  <td><input type="number" name="endA"></td>
                 </tr>
                 <tr>
                   <td>B</td>
                   <td><input type="number" name="startB" required></td>
-                  <td><input type="number" name="endB" required></td>
+                  <td><input type="number" name="endB"></td>
                 </tr>
                 <tr>
                   <td>C</td>
                   <td><input type="number" name="startC" required></td>
-                  <td><input type="number" name="endC" required></td>
+                  <td><input type="number" name="endC"></td>
                 </tr>
                 <tr>
                   <td>D</td>
                   <td><input type="number" name="startD" required></td>
-                  <td><input type="number" name="endD" required></td>
+                  <td><input type="number" name="endD"></td>
                 </tr>
                 <tr>
                   <td>E</td>
                   <td><input type="number" name="startE" required></td>
-                  <td><input type="number" name="endE" required></td>
+                  <td><input type="number" name="endE"></td>
                 </tr>
               </tbody>
             </table>
@@ -162,7 +169,10 @@ if (isset($_POST['submit'])) {
     </form>
   </div>
   <div class="col-lg-12 d-flex flex-column align-items-center m-auto mt-4">
-    <?php echo "<h2 class='text-center my-4 fw-bold text-uppercase'>$subject- Final Grading - $sem $year,  Instructor:$name</h2>" ?>
+    <?php echo "<ul class='text-center my-3 fw-bold' style='list-style-type: none;'>";
+        echo "<li style='font-size: 20px;' class='text-uppercase' >$subject - Final Grading - $sem $year</li>";
+        echo "<li style='font-size: 20px;'>Instructor: $name</li>";
+        echo "</ul>"; ?>
     <div class="wrapper p-4 border border-dark">
       <canvas id="myChart" width="1200" height="600"></canvas>
     </div>
@@ -301,21 +311,22 @@ if (isset($_POST['submit'])) {
     //   link.click();
     // }
     function downloadGraph() {
-  var canvas = document.getElementById("myChart");
-  var dataURL = canvas.toDataURL("image/png");
+      var canvas = document.getElementById("myChart");
+      var dataURL = canvas.toDataURL("image/png");
 
-  // Create a new jsPDF instance
-  // var doc = new jsPDF();
-  const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+      // Create a new jsPDF instance
+      // var doc = new jsPDF();
+      const {
+        jsPDF
+      } = window.jspdf;
+      const doc = new jsPDF();
 
-  // Add the image as a PDF element
-  doc.addImage(dataURL, "PNG", 10, 10, 190, 100); // Adjust the position and dimensions as needed
+      // Add the image as a PDF element
+      doc.addImage(dataURL, "PNG", 10, 10, 190, 100); // Adjust the position and dimensions as needed
 
-  // Save the PDF file
-  doc.save("graph.pdf");
-}
-
+      // Save the PDF file
+      doc.save("graph.pdf");
+    }
   </script>
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

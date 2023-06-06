@@ -1,4 +1,39 @@
 <?php
+session_start();
+
+
+// function destroySession(){
+//     // Unset all session variables
+//     session_unset();
+//     // Destroy the session
+//     session_destroy();
+//     header("Location: index.html");
+//     exit(); // Make sure to exit afte
+// }
+function destroySession()
+{
+    // Unset all session variables
+    session_unset();
+    // Destroy the session
+    session_destroy();
+    // Redirect to index.html using JavaScript 
+    echo "<script>window.location.href = 'index.html';</script>";
+    exit(); // Make sure to exit after the redirection
+}
+
+// ...
+
+if (isset($_POST['destroy_session'])) {
+    destroySession();
+}
+
+
+
+$name = $_SESSION['name'];
+$subject = $_SESSION['subject'];
+$sem = $_SESSION['sem'];
+$year = $_SESSION['year'];
+
 
 include_once __DIR__ . '/composer/vendor/autoload.php';
 
@@ -10,15 +45,15 @@ if (isset($_POST['submit'])) {
 
 
     $startA = $_POST['startA'];
-    $endA = $_POST['endA'];
+    // $endA = $_POST['endA'];
     $startB = $_POST['startB'];
-    $endB = $_POST['endB'];
+    // $endB = $_POST['endB'];
     $startC = $_POST['startC'];
-    $endC = $_POST['endC'];
+    // $endC = $_POST['endC'];
     $startD = $_POST['startD'];
-    $endD = $_POST['endD'];
+    // $endD = $_POST['endD'];
     $startE = $_POST['startE'];
-    $endE = $_POST['endE'];
+    // $endE = $_POST['endE'];
 }
 
 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
@@ -48,15 +83,15 @@ $countE = 0;
 
 
 foreach ($final as $data) {
-    if (($data >= $startA) && ($data <= $endA)) {
+    if (($data >= $startA) && ($data <= 100)) {
         $countA++;
-    } elseif (($data >= $startB) && ($data <= $endB)) {
+    } elseif (($data >= $startB) && ($data <= $startA - 1)) {
         $countB++;
-    } elseif (($data >= $startC) && ($data <= $endC)) {
+    } elseif (($data >= $startC) && ($data <= $startB - 1)) {
         $countC++;
-    } elseif (($data >= $startD) && ($data <= $endD)) {
+    } elseif (($data >= $startD) && ($data <= $startC - 1)) {
         $countD++;
-    } elseif (($data >= $startE) && ($data <= $endE)) {
+    } elseif (($data >= $startE) && ($data <= $startD - 1)) {
         $countE++;
     }
 }
@@ -71,70 +106,23 @@ $newArray = [];
 foreach ($gradeCount as $grade) {
     array_push($newArray, $grade); //calculate sum
 }
+//calculate CGPA
+
+$gradePointA = "4.0";
+$gradePointB = "3.0";
+$gradePointC = "2.0";
+$gradePointD = "1.0";
+$gradePointE = "0.0";
+
+$totalGradePoints = ($countA * $gradePointA) + ($countB * $gradePointB) + ($countC * $gradePointC) + ($countD * $gradePointD) + ($countE * $gradePointE);
+
+$totalStudents = (array_sum($newArray));
+$CGPA = $totalGradePoints / $totalStudents;
+$rounded_cgpa = round($CGPA, 1);
 
 
 
 
-// if (isset($_POST['excelsheet']))
-// {
-
-//     $newFinal=[];
-//     foreach ($sheetData as $row) {
-//         $firstColumns = array_slice($row, 0, 2);       // Extract the first two columns
-//         $lastColumn = array_slice($row, -1, 1); 
-//         $newRow = array_merge($firstColumns, $lastColumn);       // Extract the last column
-
-//         $newFinal[] = $newRow;
-//     }
-
-//     foreach ($newFinal as $key => $student) {
-//         // Get the marks of the student
-//         $marks = $student[2];
-
-
-//         $newgrade = '';
-//         // Determine the grade based on the marks using if-else statements
-//         if(($marks >= $startA) && ($marks <= $endA))
-//         {
-//             $newgrade='A';
-//             echo $newgrade;
-
-
-//         }
-//         elseif(($marks >= $startB) && ($marks <= $endB))
-//         {
-//             $newgarde='B';
-//         }
-//         elseif(($marks >= $startC) && ($marks <= $endC))
-//         {
-//            $newgrade='C';
-//            echo $newgrade;
-//         }
-//         elseif(($marks >= $startD) && ($marks<= $endD))
-//         {
-//             $newgrade='D';
-//            echo $newgrade;
-//         }
-//         elseif(($marks >= $startE) && ($marks <= $endE))
-//         {
-//             $newgrade='E';
-//             echo $newgrade;
-//          }
-//          $newFinal[$key]['grade'] = $newgrade;
-//         }
-
-//         $writer = new Xlsx($spreadsheet);
-//     $filename = 'modified_sheet.xlsx';
-//     $writer->save($filename);
-
-//     // Download the file
-//     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-//     header('Content-Disposition: attachment;filename="' . $filename . '"');
-//     header('Cache-Control: max-age=0');
-//     $writer->save('php://output');
-//     exit;
-
-// }
 
 
 
@@ -151,6 +139,15 @@ foreach ($gradeCount as $grade) {
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        function confirmClose() {
+            
+            if (confirm('Are you sure you want to close the session?')) {
+                document.getElementById('destroy-session-form').submit();
+            }
+            return false;
+        }
+    </script>
     <style>
         tr,
         td {
@@ -161,14 +158,28 @@ foreach ($gradeCount as $grade) {
 
             margin-left: 33%;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .button-container button {
+            margin-right: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container ">
-        <h1 class="text-center text-primary mt-3">Grade Ranges</h1>
+        <?php echo "<ul class='text-center my-4 fw-bold' style='list-style-type: none;'>";
+        echo "<li style='font-size: 20px;'>$subject - Final Grading - $sem $year</li>";
+        echo "<li style='font-size: 20px;'>Instructor: $name</li>";
+        echo "</ul>"; ?>
+        <h3 class="text-center text-primary mt-3">Grade Ranges</h3>
         <div class=tables>
-            <table class=" mt-5 table table-bordered  border-dark w-50">
+            <table class=" mt-4 table table-bordered  border-dark w-50">
                 <thead>
                     <tr>
 
@@ -182,31 +193,31 @@ foreach ($gradeCount as $grade) {
 
                         <td>A</td>
                         <td><?php echo $startA ?></td>
-                        <td><?php echo $endA ?></td>
+                        <td><?php echo '100' ?></td>
                     </tr>
                     <tr>
 
                         <td>B</td>
                         <td><?php echo $startB ?></td>
-                        <td><?php echo $endB ?></td>
+                        <td><?php echo $startA - 1 ?></td>
                     </tr>
                     <tr>
 
                         <td>C</td>
                         <td><?php echo $startC ?></td>
-                        <td><?php echo $endC ?></td>
+                        <td><?php echo $startB - 1 ?></td>
                     </tr>
                     <tr>
 
                         <td>D</td>
                         <td><?php echo $startD ?></td>
-                        <td><?php echo $endD ?></td>
+                        <td><?php echo $startC - 1 ?></td>
                     </tr>
                     <tr>
 
                         <td>E</td>
                         <td><?php echo $startE ?></td>
-                        <td><?php echo $endE ?></td>
+                        <td><?php echo $startD - 1 ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -256,32 +267,89 @@ foreach ($gradeCount as $grade) {
                         <td><?php echo (array_sum($newArray)); ?></td>
 
                     </tr>
+                    <tr>
+
+                        <td class="fw-bold">CGPA</td>
+                        <td><?php echo $rounded_cgpa; ?></td>
+
+                    </tr>
                 </tbody>
             </table>
         </div>
-        <button class="btn btn-primary" onclick="downloadTables()">Download Tables</button>
+        <!-- <button class="btn btn-primary" onclick="downloadTables()">Download Tables</button>
+       
+        <form action="" method="post"> -->
+        <!-- Your form fields -->
+
+        <!-- <div style="text-align: right;">
+    <input class="btn btn-danger" type="submit" name="destroy_session" value="Destroy Session">
+  </div>
+</form> -->
+        <div class="button-container">
+            <button class="btn btn-primary" onclick="downloadTables()">Download Tables</button>
+
+            <form action="" method="post" id="destroy-session-form">
+                <!-- Your form fields -->
+
+                <div style="text-align: right;">
+                    <button class="btn btn-danger" type="submit" name="destroy_session" value="Destroy Session" onclick="confirmClose()">Close</button>
+                </div>
+            </form>
+        </div>
+
+
 
 
     </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
     <script>
+        // function downloadTables() {
+        //     // Select the container element that wraps the tables
+        //     var container = document.querySelector('.container');
+
+        //     // Use html2canvas library to capture the container as an image
+        //     html2canvas(container).then(function(canvas) {
+        //         // Create a temporary link element and set its attributes
+        //         var link = document.createElement('a');
+        //         link.href = canvas.toDataURL(); // Convert canvas to data URL
+        //         link.download = 'tables.png'; // Set the desired filename (e.g., tables.png)
+
+        //         // Append the link to the document and simulate a click
+        //         document.body.appendChild(link);
+        //         link.click();
+
+        //         // Clean up by removing the link element
+        //         document.body.removeChild(link);
+        //     });
+        // }
         function downloadTables() {
             // Select the container element that wraps the tables
             var container = document.querySelector('.container');
 
             // Use html2canvas library to capture the container as an image
             html2canvas(container).then(function(canvas) {
-                // Create a temporary link element and set its attributes
-                var link = document.createElement('a');
-                link.href = canvas.toDataURL(); // Convert canvas to data URL
-                link.download = 'tables.png'; // Set the desired filename (e.g., tables.png)
+                // Convert canvas to data URL
+                var imgData = canvas.toDataURL('image/png');
 
-                // Append the link to the document and simulate a click
-                document.body.appendChild(link);
-                link.click();
+                // Calculate the width and height of the PDF document
+                var docWidth = canvas.width / 8.0;
+                var docHeight = canvas.height / 5.0;
 
-                // Clean up by removing the link element
-                document.body.removeChild(link);
+                const {
+                    jsPDF
+                } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', [docWidth, docHeight]);
+                // Create a new jsPDF instance
+                // var pdf = new jsPDF('p', 'mm', [docWidth, docHeight]);
+
+                // Add the captured image to the PDF document
+                doc.addImage(imgData, 'PNG', 0, 0, docWidth, docHeight);
+
+                // Save the PDF document
+                doc.save('tables.pdf');
             });
         }
     </script>
@@ -309,15 +377,15 @@ foreach ($gradeCount as $grade) {
 
         $newgrade = '';
         // Determine the grade based on the marks using if-else statements
-        if (($marks >= $startA) && ($marks <= $endA)) {
+        if (($marks >= $startA) && ($marks <= 100)) {
             $newgrade = 'A';
-        } elseif (($marks >= $startB) && ($marks <= $endB)) {
-            $newgarde = 'B';
-        } elseif (($marks >= $startC) && ($marks <= $endC)) {
+        } elseif (($marks >= $startB) && ($marks <= $startA - 1)) {
+            $newgrade = 'B';
+        } elseif (($marks >= $startC) && ($marks <= $startB - 1)) {
             $newgrade = 'C';
-        } elseif (($marks >= $startD) && ($marks <= $endD)) {
+        } elseif (($marks >= $startD) && ($marks <= $startC - 1)) {
             $newgrade = 'D';
-        } elseif (($marks >= $startE) && ($marks <= $endE)) {
+        } elseif (($marks >= $startE) && ($marks <= $startD - 1)) {
             $newgrade = 'E';
         }
         $newFinal[$key][] = $newgrade;

@@ -110,16 +110,16 @@
             html: `
           <form class="d-flex flex-column w-75 m-auto align-items-center" action="./graph.php" method="POST">
             <input type="text" class="form-control mt-4" name="insName" placeholder="Instructor Name" required>
-            <input type="text" class="form-control mt-4" name="sub" placeholder="Subject" required>
+            <input type="text" class="form-control mt-4 " name="sub" placeholder="Subject" required>
             <input type="text" class="form-control mt-4" name="subCode" placeholder="Subject Code" required>
             <select class="form-select mt-4" name="sem" aria-label="Default select example" required>
-              <option selected disabled>Choose Semester</option>
+              <option value="" selected disabled>Choose Semester</option>
               <option value="Ist Sem">Ist Sem</option>
               <option value="IInd Sem">IInd Sem</option>
               <option value="IIIrd Sem">IIIrd Sem</option>
             </select>
             <select class="form-select mt-4" name="year" aria-label="Default select example" required>
-              <option selected disabled>Choose Year</option>
+              <option value=""selected disabled>Choose Year</option>
               <option value="2021-22">2021-22</option>
               <option value="2022-23">2022-23</option>
               <option value="2023-24">2023-24</option>

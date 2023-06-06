@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once('../composer/vendor/autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
