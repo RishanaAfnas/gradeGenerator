@@ -177,10 +177,10 @@ $rounded_cgpa = round($CGPA, 1);
         echo "<li style='font-size: 20px;'>$subject - Final Grading - $sem $year</li>";
         echo "<li style='font-size: 20px;'>Instructor: $name</li>";
         echo "</ul>"; ?>
-        <h3 class="text-center text-primary mt-3">Grade Ranges</h3>
+        <h4 class="text-center text-primary mt-3">Grade Ranges</h4>
         <div class=tables>
-            <table class=" mt-4 table table-bordered  border-dark w-50">
-                <thead>
+            <table class=" mt-4 table table-bordered  border-dark w-50 hadow p-3 mb-5 bg-body rounded ">
+                <thead class="table-success">
                     <tr>
 
                         <th scope="col">Grade</th>
@@ -221,8 +221,8 @@ $rounded_cgpa = round($CGPA, 1);
                     </tr>
                 </tbody>
             </table>
-            <table class=" mt-5 table table-bordered border-primary w-50">
-                <thead>
+            <table class=" mt-5 table table-bordered border-primary w-50 hadow p-3 mb-5 bg-body rounded">
+                <thead class="table-success">
                     <tr>
 
                         <th scope="col">Grade</th>

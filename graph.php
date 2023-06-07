@@ -131,28 +131,28 @@ if (isset($_POST['submit'])) {
               <tbody>
                 <tr>
                   <td>A</td>
-                  <td><input type="number" name="startA" required></td>
-                  <td><input type="number" name="endA"></td>
+                  <td><input type="number" id="startA" name="startA" required></td>
+                  <td><input type="number"id="endA" name="endA"></td>
                 </tr>
                 <tr>
                   <td>B</td>
-                  <td><input type="number" name="startB" required></td>
-                  <td><input type="number" name="endB"></td>
+                  <td><input type="number" id="startB"  name="startB" required></td>
+                  <td><input type="number"  id="endB" name="endB"></td>
                 </tr>
                 <tr>
                   <td>C</td>
-                  <td><input type="number" name="startC" required></td>
-                  <td><input type="number" name="endC"></td>
+                  <td><input type="number" id="startC" name="startC" required></td>
+                  <td><input type="number"id="endC" name="endC"></td>
                 </tr>
                 <tr>
                   <td>D</td>
-                  <td><input type="number" name="startD" required></td>
-                  <td><input type="number" name="endD"></td>
+                  <td><input type="number" id="startD" name="startD" required></td>
+                  <td><input type="number" id="endD" name="endD"></td>
                 </tr>
                 <tr>
                   <td>E</td>
-                  <td><input type="number" name="startE" required></td>
-                  <td><input type="number" name="endE"></td>
+                  <td><input type="number" id="stratE" name="startE" required></td>
+                  <td><input type="number" id="endE" name="endE"></td>
                 </tr>
               </tbody>
             </table>
@@ -174,7 +174,7 @@ if (isset($_POST['submit'])) {
         echo "<li style='font-size: 20px;'>Instructor: $name</li>";
         echo "</ul>"; ?>
     <div class="wrapper p-4 border border-dark">
-      <canvas id="myChart" width="1200" height="600"></canvas>
+      <canvas id="myChart" width="1800" height="600"></canvas>
     </div>
     <div class="col-lg-6 text-start mt-4 w-100 px-4 text-primary fw-bold">
       <h6>Average of Marks: <?php echo $fAvg; ?></h6>
@@ -191,6 +191,39 @@ if (isset($_POST['submit'])) {
 
     </div>
   </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+  
+
+
+  // Function to update the next field based on the current input
+  function updateNextField(currentFieldId, nextFieldId) {
+    const currentField = document.getElementById(currentFieldId);
+    const nextField = document.getElementById(nextFieldId);
+    
+    // Subtract 1 from the value of the current field and set it as the value of the next field
+    nextField.value = currentField.value ? parseInt(currentField.value) - 1 : '';
+  }
+
+  // Add event listeners to the current fields to update the next fields
+  document.getElementById('startA').addEventListener('input', function() {
+    updateNextField('startA', 'endB');
+  });
+  document.getElementById('startB').addEventListener('input', function() {
+    updateNextField('startB', 'endC');
+  });
+  document.getElementById('startC').addEventListener('input', function() {
+    updateNextField('startC', 'endD');
+  });
+ document.getElementById('startD').addEventListener('input',function() {
+  updateNextField('startD','endE');
+ });
+});
+ 
+</script>
+
+
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="text/javascript">
@@ -310,6 +343,7 @@ if (isset($_POST['submit'])) {
     //   link.download = "graph.png";
     //   link.click();
     // }
+    //download as pdf
     function downloadGraph() {
       var canvas = document.getElementById("myChart");
       var dataURL = canvas.toDataURL("image/png");
