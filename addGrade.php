@@ -143,12 +143,10 @@ $rounded_cgpa = round($CGPA, 1);
         function confirmClose() {
   var confirmBox = confirm("Are you sure you want to close?");
   if (confirmBox) {
-    // Do something when the user clicks "OK"
-    // For example, redirect to index.html
+    
     window.location.href = "index.html";
   } else {
-    // Do something when the user clicks "Cancel"
-    // For example, cancel the default action
+    
     event.preventDefault();
   }
 }
@@ -282,21 +280,12 @@ $rounded_cgpa = round($CGPA, 1);
                 </tbody>
             </table>
         </div>
-        <!-- <button class="btn btn-primary" onclick="downloadTables()">Download Tables</button>
-       
-        <form action="" method="post"> -->
-        <!-- Your form fields -->
-
-        <!-- <div style="text-align: right;">
-    <input class="btn btn-danger" type="submit" name="destroy_session" value="Destroy Session">
-  </div>
-</form> -->
+        
         <div class="button-container">
             <button class="btn btn-primary" onclick="downloadTables()">Download Tables</button>
 
             <form action="" method="post" id="destroy-session-form">
-                <!-- Your form fields -->
-
+                
                 <div style="text-align: right;">
                     <button class="btn btn-danger" type="submit" name="destroy_session" value="Destroy Session" onclick="confirmClose()">Close</button>
                 </div>
