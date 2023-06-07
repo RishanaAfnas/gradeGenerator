@@ -141,12 +141,18 @@ $rounded_cgpa = round($CGPA, 1);
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         function confirmClose() {
-            
-            if (confirm('Are you sure you want to close the session?')) {
-                document.getElementById('destroy-session-form').submit();
-            }
-            return false;
-        }
+  var confirmBox = confirm("Are you sure you want to close the session?");
+  if (confirmBox) {
+    // Do something when the user clicks "OK"
+    // For example, redirect to index.html
+    window.location.href = "index.html";
+  } else {
+    // Do something when the user clicks "Cancel"
+    // For example, cancel the default action
+    event.preventDefault();
+  }
+}
+
     </script>
     <style>
         tr,
