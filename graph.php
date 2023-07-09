@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
 
   $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
-  $spreadsheet = $reader->load('C:\xampp\htdocs\grade\new grade-generator\software\software.xlsx');
+  $spreadsheet = $reader->load('./software/software.xlsx');
 
   $sheetData = $spreadsheet->getSheet(0)->toArray();
 

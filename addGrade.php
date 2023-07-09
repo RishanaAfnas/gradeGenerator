@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 
@@ -16,8 +17,18 @@ function destroySession()
     session_unset();
     // Destroy the session
     session_destroy();
-    // Redirect to index.html using JavaScript 
-    echo "<script>window.location.href = 'index.html';</script>";
+    //to delete the excel sheets after destroying sessions
+    $filePath = './software/software.xlsx';
+    if (file_exists($filePath)) {
+        unlink($filePath);
+    }
+    $filePath1 = './software/changed.xlsx';
+    if (file_exists($filePath1)) {
+        unlink($filePath1);
+    }
+    
+    // Redirect to main.php using JavaScript 
+    echo "<script>window.location.href = 'main.php';</script>";
     exit(); // Make sure to exit after the redirection
 }
 
@@ -58,7 +69,7 @@ if (isset($_POST['submit'])) {
 
 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
-$spreadsheet = $reader->load('C:\xampp\htdocs\grade\new grade-generator\software\software.xlsx');
+$spreadsheet = $reader->load('./software/software.xlsx');
 
 $sheetData = $spreadsheet->getSheet(0)->toArray();
 
@@ -144,7 +155,7 @@ $rounded_cgpa = round($CGPA, 1);
   var confirmBox = confirm("Are you sure you want to close?");
   if (confirmBox) {
     
-    window.location.href = "index.html";
+    window.location.href = "main.php";
   } else {
     
     event.preventDefault();
@@ -283,6 +294,8 @@ $rounded_cgpa = round($CGPA, 1);
         
         <div class="button-container">
             <button class="btn btn-primary" onclick="downloadTables()">Download Tables</button>
+           
+
 
             <form action="" method="post" id="destroy-session-form">
                 
@@ -393,7 +406,9 @@ $rounded_cgpa = round($CGPA, 1);
     $newSheet = $newSpreadsheet->getSheet(0)->fromArray($newFinal);
     $writer = new Xlsx($newSpreadsheet);
 
-    $writer->save('C:\xampp\htdocs\grade\new grade-generator\software\changed.xlsx');
+    $writer->save('./software/changed.xlsx');
+    
+  
 
 
 

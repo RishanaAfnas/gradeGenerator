@@ -1,3 +1,7 @@
+<?php 
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,7 +29,7 @@
     <div class="content" style="height:100vh !important;">
       <form
         class="form"
-        action="index.html"
+        action="main.php"
         method="POST"
         enctype="multipart/form-data"
       >

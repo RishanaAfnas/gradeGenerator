@@ -13,6 +13,8 @@ if(isset($_FILES['doc'])) {
     $doc_tmp = $_FILES['doc']['tmp_name'];
     $doc_type = $_FILES['doc']['type'];
     $ext = pathinfo($doc_name, PATHINFO_EXTENSION);
+    echo "<pre>";
+    print_r($doc_name);
 
     $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
@@ -82,6 +84,9 @@ if(isset($_FILES['doc'])) {
 
         $writer = new Xlsx($newSpreadsheet);
 
-        $writer->save('C:\xampp\htdocs\grade\new grade-generator\software\software.xlsx');
+        $writer->save('../software/software.xlsx');
             }
         }
+      else{
+        echo "hello";
+      }
