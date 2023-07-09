@@ -33,12 +33,15 @@ if (isset($_POST['submit'])) {
       $final[] = $row[11];
     }
   }
-
+  // echo "<pre>";
+  // print_r($final);
+  // die();
 
   array_splice($final, 0, 1);
 
 
   sort($final);
+  
 
   $count = array_count_values($final);
 

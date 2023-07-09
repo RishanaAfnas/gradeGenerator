@@ -18,14 +18,14 @@ function destroySession()
     // Destroy the session
     session_destroy();
     //to delete the excel sheets after destroying sessions
-    $filePath = './software/software.xlsx';
-    if (file_exists($filePath)) {
-        unlink($filePath);
-    }
-    $filePath1 = './software/changed.xlsx';
-    if (file_exists($filePath1)) {
-        unlink($filePath1);
-    }
+    // $filePath = './software/software.xlsx';
+    // if (file_exists($filePath)) {
+    //     unlink($filePath);
+    // }
+    // $filePath1 = './software/changed.xlsx';
+    // if (file_exists($filePath1)) {
+    //     unlink($filePath1);
+    // }
     
     // Redirect to main.php using JavaScript 
     echo "<script>window.location.href = 'main.php';</script>";
